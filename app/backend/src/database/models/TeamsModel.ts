@@ -1,12 +1,12 @@
 import { STRING, INTEGER, Model } from 'sequelize';
 import db from '.';
 
-class Teams extends Model {
+class TeamsModel extends Model {
   declare id: number;
   declare teamName: string;
 }
 
-Teams.init({
+TeamsModel.init({
   id: {
     type: INTEGER,
     allowNull: false,
@@ -18,10 +18,10 @@ Teams.init({
     allowNull: false,
   },
 }, {
-  underscored: true,
   sequelize: db,
+  underscored: true,
   modelName: 'teams', // recebe o nome da tabela
   timestamps: false,
 });
 
-export default Teams;
+export default TeamsModel;
