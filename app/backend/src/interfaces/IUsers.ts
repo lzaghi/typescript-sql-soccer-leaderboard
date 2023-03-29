@@ -14,4 +14,5 @@ export interface IUserWithPassword extends IUserWithoutPassword {
 
 export interface IUsersService {
   getByEmail(email: string): Promise<IUserWithPassword | null>
+  getById(id: number): Promise<IUserWithPassword | null>;
 }

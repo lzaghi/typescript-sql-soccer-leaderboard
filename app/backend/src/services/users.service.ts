@@ -10,4 +10,9 @@ export default class UsersService implements IUsersService {
     });
     return user;
   }
+
+  async getById(id: number): Promise<IUserWithPassword | null> {
+    const user = await this.model.findByPk(id);
+    return user;
+  }
 }
