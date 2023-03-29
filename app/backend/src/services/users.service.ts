@@ -4,7 +4,7 @@ import { IUsersService, IUserWithPassword } from '../interfaces/IUsers';
 export default class UsersService implements IUsersService {
   constructor(private model: typeof UsersModel) {}
 
-  async login(email: string): Promise<IUserWithPassword | null> {
+  async getByEmail(email: string): Promise<IUserWithPassword | null> {
     const user = await this.model.findOne({
       where: { email },
     });

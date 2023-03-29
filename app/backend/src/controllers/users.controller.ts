@@ -13,10 +13,10 @@ export default class UsersController {
 
   async login(req: Request, res: Response) {
     const { email, password } = req.body;
-    const user = await this.service.login(email);
+    const user = await this.service.getByEmail(email);
 
     if (!user) {
-      return res.status(400).json({ message: 'Invalid fields' });
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
 
     const token = sign({ data: { userId: user.id } }, secret, jwtConfig);
@@ -25,7 +25,7 @@ export default class UsersController {
       if (data) {
         return res.status(200).json({ token });
       }
-      return res.status(400).json({ message: 'Invalid fields' });
+      return res.status(401).json({ message: 'Invalid email or password' });
     });
   }
 }
