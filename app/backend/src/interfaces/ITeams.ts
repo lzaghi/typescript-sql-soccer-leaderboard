@@ -8,4 +8,5 @@ export interface ITeamWithId extends ITeam {
 
 export interface ITeamService {
   getAll(): Promise<ITeamWithId[]>;
+  getById(id: number): Promise<ITeamWithId | null>;
 }
