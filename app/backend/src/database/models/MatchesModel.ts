@@ -47,8 +47,8 @@ MatchesModel.init({
 
 export default MatchesModel;
 
-MatchesModel.hasMany(TeamsModel, { foreignKey: 'id', as: 'home_team_id' });
-MatchesModel.hasMany(TeamsModel, { foreignKey: 'id', as: 'away_team_id' });
+TeamsModel.hasMany(MatchesModel, { sourceKey: 'id', foreignKey: 'homeTeamId' });
+TeamsModel.hasMany(MatchesModel, { sourceKey: 'id', foreignKey: 'awayTeamId' });
 
-TeamsModel.belongsTo(MatchesModel, { foreignKey: 'id', as: 'home_team_id' });
-TeamsModel.belongsTo(MatchesModel, { foreignKey: 'id', as: 'away_team_id' });
+MatchesModel.belongsTo(TeamsModel, { foreignKey: 'homeTeamId', targetKey: 'id', as: 'homeTeam' });
+MatchesModel.belongsTo(TeamsModel, { foreignKey: 'awayTeamId', targetKey: 'id', as: 'awayTeam' });
