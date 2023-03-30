@@ -19,4 +19,5 @@ export interface IMatchAssociation extends IMatch {
 export interface IMatchesService {
   getAll(): Promise<IMatch[]>
   getByQuery(q: string): Promise<IMatch[]>
+  finishMatch(id: number): Promise<void>
 }
