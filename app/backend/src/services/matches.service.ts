@@ -1,6 +1,6 @@
 import TeamsModel from '../database/models/TeamsModel';
 import MatchesModel from '../database/models/MatchesModel';
-import { IMatch, IMatchesService } from '../interfaces/IMatches';
+import { IMatch, IMatchesService, updateBody } from '../interfaces/IMatches';
 
 export default class MatchesService implements IMatchesService {
   private _bool: number;
@@ -36,6 +36,14 @@ export default class MatchesService implements IMatchesService {
   async finishMatch(id: number): Promise<void> {
     await this.myModel.update(
       { inProgress: 0 },
+      { where: { id } },
+    );
+  }
+
+  async updateMatch(id: number, body: updateBody): Promise<void> {
+    const { homeTeamGoals, awayTeamGoals } = body;
+    await this.myModel.update(
+      { homeTeamGoals, awayTeamGoals },
       { where: { id } },
     );
   }
