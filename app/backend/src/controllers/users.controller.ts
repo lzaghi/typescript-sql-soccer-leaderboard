@@ -52,7 +52,7 @@ export default class UsersController {
 
   async loginRole(req: Request, res: Response) {
     const { authorization: token } = req.headers;
-    console.log(token);
+
     try {
       const payload = jwt.verify(token as string, this.secret) as JwtPayload;
       const { data: { userId } } = payload;
