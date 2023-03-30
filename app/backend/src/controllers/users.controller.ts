@@ -1,7 +1,11 @@
 import { compare } from 'bcryptjs';
+import * as dotenv from 'dotenv';
 import { Request, Response } from 'express';
+
 import * as jwt from 'jsonwebtoken';
 import UsersService from '../services/users.service';
+
+dotenv.config();
 
 interface JwtPayload {
   data: {
@@ -47,9 +51,10 @@ export default class UsersController {
   }
 
   async loginRole(req: Request, res: Response) {
-    const { authorization } = req.headers;
+    const { authorization: token } = req.headers;
+    console.log(token);
     try {
-      const payload = jwt.verify(authorization as string, this.secret) as JwtPayload;
+      const payload = jwt.verify(token as string, this.secret) as JwtPayload;
       const { data: { userId } } = payload;
       const user = await this.service.getById(userId);
 
