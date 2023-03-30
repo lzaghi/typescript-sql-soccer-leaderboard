@@ -78,4 +78,24 @@ export default class MatchesController {
       return res.status(401).json({ message: this._tokenMessage });
     }
   }
+
+  async insertMatch(req: Request, res: Response) {
+    const { authorization: token } = req.headers;
+
+    try {
+      const payload = jwt.verify(token as string, this._secret) as JwtPayload;
+      const { data: { userId } } = payload;
+      const user = await this.usersService.getById(userId);
+
+      if (!user) {
+        return res.status(401).json({ message: this._tokenMessage });
+      }
+
+      req.body.user = user;
+      const newMatch = await this.service.insertMatch(req.body);
+      return res.status(201).json(newMatch);
+    } catch (error) {
+      return res.status(401).json({ message: this._tokenMessage });
+    }
+  }
 }

@@ -1,9 +1,12 @@
-export interface IMatch {
-  id: number,
+export interface IMatchTeamsInfo {
   homeTeamId: number,
   homeTeamGoals: number,
   awayTeamId: number,
   awayTeamGoals: number,
+}
+
+export interface IMatch extends IMatchTeamsInfo {
+  id: number,
   inProgress: boolean,
 }
 
@@ -22,8 +25,9 @@ export type updateBody = {
 };
 
 export interface IMatchesService {
-  getAll(): Promise<IMatch[]>
   getByQuery(q: string): Promise<IMatch[]>
+  getAll(): Promise<IMatch[]>
   finishMatch(id: number): Promise<void>
   updateMatch(id: number, updateBody: updateBody): Promise<void>
+  insertMatch(body: IMatchTeamsInfo): Promise<any>
 }
