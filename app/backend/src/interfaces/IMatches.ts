@@ -29,5 +29,5 @@ export interface IMatchesService {
   getAll(): Promise<IMatch[]>
   finishMatch(id: number): Promise<void>
   updateMatch(id: number, updateBody: updateBody): Promise<void>
-  insertMatch(body: IMatchTeamsInfo): Promise<any>
+  insertMatch(body: IMatchTeamsInfo): Promise<IMatch>
 }

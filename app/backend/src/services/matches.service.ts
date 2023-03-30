@@ -48,7 +48,7 @@ export default class MatchesService implements IMatchesService {
     );
   }
 
-  async insertMatch(body: IMatchTeamsInfo): Promise<any> {
+  async insertMatch(body: IMatchTeamsInfo): Promise<IMatch> {
     const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = body;
     const result = await this.myModel.create(
       { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals, inProgress: 1 },
