@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import { Request, Response } from 'express';
 
 import * as jwt from 'jsonwebtoken';
+import { ITeamService } from '../interfaces/ITeams';
 import { IUsersService } from '../interfaces/IUsers';
 import { IMatchesService } from '../interfaces/IMatches';
 
@@ -20,6 +21,7 @@ export default class MatchesController {
   constructor(
     private service: IMatchesService,
     private usersService: IUsersService,
+    private teamsService: ITeamService,
   ) {
     this._secret = process.env.JWT_SECRET || 'secret';
     this._tokenMessage = 'Token must be a valid token';
@@ -81,17 +83,24 @@ export default class MatchesController {
 
   async insertMatch(req: Request, res: Response) {
     const { authorization: token } = req.headers;
+    const { homeTeamId, awayTeamId } = req.body;
 
     try {
       const payload = jwt.verify(token as string, this._secret) as JwtPayload;
-      const { data: { userId } } = payload;
-      const user = await this.usersService.getById(userId);
+      const user = await this.usersService.getById(payload.data.userId);
 
-      if (!user) {
-        return res.status(401).json({ message: this._tokenMessage });
+      if (!user) return res.status(401).json({ message: this._tokenMessage });
+
+      if (homeTeamId === awayTeamId) {
+        return res.status(422)
+          .json({ message: 'It is not possible to create a match with two equal teams' });
       }
 
-      req.body.user = user;
+      const t1 = await this.teamsService.getById(homeTeamId);
+      const t2 = await this.teamsService.getById(awayTeamId);
+
+      if (!t1 || !t2) return res.status(404).json({ message: 'There is no team with such id!' });
+
       const newMatch = await this.service.insertMatch(req.body);
       return res.status(201).json(newMatch);
     } catch (error) {

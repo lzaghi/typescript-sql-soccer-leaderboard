@@ -6,11 +6,13 @@ import MatchesService from '../services/matches.service';
 import validateToken from '../middlewares/auth.middleware';
 import UsersService from '../services/users.service';
 import UsersModel from '../database/models/UsersModel';
+import TeamsService from '../services/teams.service';
 
 const usersService = new UsersService(UsersModel);
+const teamsService = new TeamsService(TeamsModel);
 
 const matchesService = new MatchesService(MatchesModel, TeamsModel);
-const matchesController = new MatchesController(matchesService, usersService);
+const matchesController = new MatchesController(matchesService, usersService, teamsService);
 
 const matchesRouter = Router();
 

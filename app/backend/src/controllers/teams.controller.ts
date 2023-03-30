@@ -14,7 +14,7 @@ export default class TeamsController {
     const team = await this.service.getById(+id);
 
     if (!team) {
-      return res.status(404).json({ message: 'id not found' });
+      return res.status(404).json({ message: 'There is no team with such id!' });
     }
 
     return res.status(200).json(team);
