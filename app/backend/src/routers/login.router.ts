@@ -11,6 +11,10 @@ const usersController = new UsersController(usersService);
 const loginRouter = Router();
 
 loginRouter.post('/', validateLoginBody, (req, res) => usersController.login(req, res));
-loginRouter.get('/role', validateToken, (req, res) => usersController.loginRole(req, res));
+loginRouter.get(
+  '/role',
+  validateToken(usersService),
+  (req, res) => usersController.loginRole(req, res),
+);
 
 export default loginRouter;

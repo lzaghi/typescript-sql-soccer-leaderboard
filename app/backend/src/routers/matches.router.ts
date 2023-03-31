@@ -12,24 +12,24 @@ const usersService = new UsersService(UsersModel);
 const teamsService = new TeamsService(TeamsModel);
 
 const matchesService = new MatchesService(MatchesModel, TeamsModel);
-const matchesController = new MatchesController(matchesService, usersService, teamsService);
+const matchesController = new MatchesController(matchesService, teamsService);
 
 const matchesRouter = Router();
 
 matchesRouter.get('/', (req, res) => matchesController.getAll(req, res));
 matchesRouter.patch(
   '/:id/finish',
-  validateToken,
+  validateToken(usersService),
   (req, res) => matchesController.finishMatch(req, res),
 );
 matchesRouter.patch(
   '/:id',
-  validateToken,
+  validateToken(usersService),
   (req, res) => matchesController.updateMatch(req, res),
 );
 matchesRouter.post(
   '/',
-  validateToken,
+  validateToken(usersService),
   (req, res) => matchesController.insertMatch(req, res),
 );
 

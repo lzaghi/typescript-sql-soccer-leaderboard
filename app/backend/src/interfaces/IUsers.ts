@@ -10,9 +10,13 @@ export interface IUserWithoutPassword extends IUserLogin {
 
 export interface IUserWithPassword extends IUserWithoutPassword {
   password: string;
+  dataValues: IUserWithPassword
+}
+export interface IDataValues {
+  dataValues: IUserWithPassword
 }
 
 export interface IUsersService {
   getByEmail(email: string): Promise<IUserWithPassword | null>
-  getById(id: number): Promise<IUserWithPassword | null>;
+  getById(id: number): Promise<IDataValues | null>;
 }

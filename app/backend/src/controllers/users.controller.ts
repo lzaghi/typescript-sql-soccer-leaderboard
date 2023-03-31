@@ -7,12 +7,6 @@ import UsersService from '../services/users.service';
 
 dotenv.config();
 
-interface JwtPayload {
-  data: {
-    userId: number,
-  }
-}
-
 export default class UsersController {
   private _secret: string;
   private _jwtConfig: object;
@@ -40,7 +34,7 @@ export default class UsersController {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const token = jwt.sign({ data: { userId: user.id } }, this.secret, this.jwtConfig);
+    const token = jwt.sign({ userId: user.id, userEmail: user.email }, this.secret, this.jwtConfig);
 
     compare(password, user.password, (_err, data) => {
       if (data) {
@@ -51,21 +45,8 @@ export default class UsersController {
   }
 
   async loginRole(req: Request, res: Response) {
-    const { authorization: token } = req.headers;
-
-    try {
-      const payload = jwt.verify(token as string, this.secret) as JwtPayload;
-      const { data: { userId } } = payload;
-      const user = await this.service.getById(userId);
-
-      if (!user) {
-        return res.status(401).json({ message: 'Token must be a valid token' });
-      }
-
-      req.body.user = user;
-      return res.status(200).json({ role: user.role });
-    } catch (error) {
-      return res.status(401).json({ message: 'Token must be a valid token' });
-    }
+    const userId = req.body.user.dataValues.id;
+    const user = await this.service.getById(userId);
+    if (user) return res.status(200).json({ role: user.role });
   }
 }
