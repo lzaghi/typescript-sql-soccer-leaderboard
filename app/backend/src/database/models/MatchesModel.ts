@@ -51,4 +51,5 @@ TeamsModel.hasMany(MatchesModel, { sourceKey: 'id', foreignKey: 'homeTeamId' });
 TeamsModel.hasMany(MatchesModel, { sourceKey: 'id', foreignKey: 'awayTeamId' });
 
 MatchesModel.belongsTo(TeamsModel, { foreignKey: 'homeTeamId', targetKey: 'id', as: 'homeTeam' });
+MatchesModel.belongsTo(TeamsModel, { foreignKey: 'homeTeamId', targetKey: 'id' });
 MatchesModel.belongsTo(TeamsModel, { foreignKey: 'awayTeamId', targetKey: 'id', as: 'awayTeam' });

@@ -21,6 +21,11 @@ export default class MatchesController {
     return res.status(200).json(matches);
   }
 
+  async getHomeLeaderboard(_req: Request, res: Response) {
+    const leaderboards = await this.service.getHomeLeaderboard();
+    return res.status(200).json(leaderboards);
+  }
+
   async finishMatch(req: Request, res: Response) {
     const { id } = req.params;
     await this.service.finishMatch(+id);
