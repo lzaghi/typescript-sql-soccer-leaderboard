@@ -40,6 +40,7 @@ export interface IMatchesService {
   getAll(): Promise<IMatch[]>
   getHomeLeaderboard(): Promise<object[]>
   getAwayLeaderboard(): Promise<object[]>
+  getGeneralLeaderboard(): Promise<any>
   finishMatch(id: number): Promise<void>
   updateMatch(id: number, updateBody: updateBody): Promise<void>
   insertMatch(body: IMatchTeamsInfo): Promise<IMatch>

@@ -31,6 +31,11 @@ export default class MatchesController {
     return res.status(200).json(leaderboards);
   }
 
+  async getGeneralLeaderboard(_req: Request, res: Response) {
+    const leaderboards = await this.service.getGeneralLeaderboard();
+    return res.status(200).json(leaderboards);
+  }
+
   async finishMatch(req: Request, res: Response) {
     const { id } = req.params;
     await this.service.finishMatch(+id);
