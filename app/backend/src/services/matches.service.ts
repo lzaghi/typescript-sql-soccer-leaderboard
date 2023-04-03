@@ -39,24 +39,24 @@ export default class MatchesService implements IMatchesService {
   }
 
   async getHomeLeaderboard(): Promise<MatchesModel[]> {
-    const leaderboard = this.myModel.findAll({
+    return this.myModel.findAll({
       where: { inProgress: 0 },
       include: { model: this.fkModel, as: 'homeTeam', attributes: [] },
       attributes: [[sequelize.col('homeTeam.team_name'), 'name'],
         [sequelize.literal(`3 * SUM(home_team_goals > away_team_goals) +
-      1 * SUM(home_team_goals = away_team_goals)`), 'totalPoints'],
+          1 * SUM(home_team_goals = away_team_goals)`), 'totalPoints'],
         [sequelize.fn('COUNT', sequelize.col('home_team_id')), 'totalGames'],
-        [sequelize.literal('SUM(home_team_goals > away_team_goals)'),
-          'totalVictories'],
-        [sequelize.literal('SUM(home_team_goals = away_team_goals)'),
-          'totalDraws'],
-        [sequelize.literal('SUM(home_team_goals < away_team_goals)'),
-          'totalLosses'],
+        [sequelize.literal('SUM(home_team_goals > away_team_goals)'), 'totalVictories'],
+        [sequelize.literal('SUM(home_team_goals = away_team_goals)'), 'totalDraws'],
+        [sequelize.literal('SUM(home_team_goals < away_team_goals)'), 'totalLosses'],
         [sequelize.fn('SUM', sequelize.col('home_team_goals')), 'goalsFavor'],
-        [sequelize.fn('SUM', sequelize.col('away_team_goals')), 'goalsOwn']],
+        [sequelize.fn('SUM', sequelize.col('away_team_goals')), 'goalsOwn'],
+        [sequelize.literal('SUM(home_team_goals) - SUM(away_team_goals)'), 'goalsBalance'],
+        [sequelize.literal(`ROUND(((3 * SUM(home_team_goals > away_team_goals) + 1 * SUM(
+          home_team_goals=away_team_goals))/(COUNT(home_team_id) * 3)) * 100, 2)`), 'efficiency']],
       group: ['home_team_id'],
-    });
-    return leaderboard;
+      order: [['totalPoints', 'DESC'], ['totalVictories', 'DESC'],
+        ['goalsBalance', 'DESC'], ['goalsFavor', 'DESC']] });
   }
 
   async finishMatch(id: number): Promise<void> {
