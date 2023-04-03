@@ -39,6 +39,7 @@ export interface IMatchesService {
   getByQuery(q: string): Promise<IMatch[]>
   getAll(): Promise<IMatch[]>
   getHomeLeaderboard(): Promise<object[]>
+  getAwayLeaderboard(): Promise<object[]>
   finishMatch(id: number): Promise<void>
   updateMatch(id: number, updateBody: updateBody): Promise<void>
   insertMatch(body: IMatchTeamsInfo): Promise<IMatch>
