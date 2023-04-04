@@ -1,3 +1,5 @@
+import MatchesModel from '../database/models/MatchesModel';
+
 export interface IMatchTeamsInfo {
   homeTeamId: number,
   homeTeamGoals: number,
@@ -24,7 +26,7 @@ export type updateBody = {
   awayTeamGoals: string
 };
 
-export interface ILeaderboard {
+export interface ILeaderboard extends MatchesModel {
   name: string,
   totalPoints: number,
   totalGames: number,
@@ -33,6 +35,9 @@ export interface ILeaderboard {
   totalLosses: number,
   goalsFavor: number,
   goalsOwn: number,
+  goalsBalance: number,
+  efficiency: string,
+  dataValues: ILeaderboard,
 }
 
 export interface IMatchesService {
@@ -40,7 +45,7 @@ export interface IMatchesService {
   getAll(): Promise<IMatch[]>
   getHomeLeaderboard(): Promise<object[]>
   getAwayLeaderboard(): Promise<object[]>
-  getGeneralLeaderboard(): Promise<any>
+  getGeneralLeaderboard(): Promise<ILeaderboard[]>
   finishMatch(id: number): Promise<void>
   updateMatch(id: number, updateBody: updateBody): Promise<void>
   insertMatch(body: IMatchTeamsInfo): Promise<IMatch>
