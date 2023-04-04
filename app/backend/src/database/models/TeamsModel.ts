@@ -1,7 +1,7 @@
-import { STRING, INTEGER, Model } from 'sequelize';
+import { STRING, INTEGER, Model, InferAttributes, InferCreationAttributes } from 'sequelize';
 import db from '.';
 
-class TeamsModel extends Model {
+class TeamsModel extends Model<InferAttributes<TeamsModel>, InferCreationAttributes<TeamsModel>> {
   declare id: number;
   declare teamName: string;
 }
