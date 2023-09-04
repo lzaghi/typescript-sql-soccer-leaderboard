@@ -1,4 +1,4 @@
-# Delivery App - Birita Go
+# Soccer Leaderboard - Trybe Futebol Clube
 
 Essa é uma implementação de uma aplicação fullstack, com uso de React, Node.js (Typescript) com Express.js, e banco de dados MySQL. </br>É um aplicativo de um gerenciador de partidas e classificações de futebol, no qual é possível acessar e manipular dados de times, partidas e placares.
 
