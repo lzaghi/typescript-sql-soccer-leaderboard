@@ -9,15 +9,11 @@ import TeamsModel from '../database/models/TeamsModel'
 import { teamsList } from "./mocks/teams.mock";
 import { app } from "../app"
 
-// import { Response } from 'superagent';
-
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
 describe('GET /teams', () => {
-
-  // let chaiHttpResponse: Response;
 
   it('returns status 200', async () => {
     const chaiHttpResponse = await chai
@@ -25,7 +21,6 @@ describe('GET /teams', () => {
       .get('/teams')
     
     expect(chaiHttpResponse.status).to.be.equal(200)
-    // expect(chaiHttpResponse.body).to.deep.equal(teamsList)
   })
 })
 

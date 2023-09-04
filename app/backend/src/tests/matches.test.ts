@@ -1,14 +1,9 @@
-import * as sinon from 'sinon';
 import * as chai from 'chai';
 
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import { Model } from 'sequelize'
-import MatchesModel from '../database/models/MatchesModel'
 import { app } from "../app"
-
-// import { Response } from 'superagent';
 
 chai.use(chaiHttp);
 

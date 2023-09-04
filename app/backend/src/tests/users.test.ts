@@ -8,15 +8,12 @@ import { Model } from 'sequelize'
 import UsersModel from '../database/models/UsersModel'
 import { app } from "../app"
 
-// import { Response } from 'superagent';
-
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
 describe('POST /login', () => {
 
-  // let chaiHttpResponse: Response;
   afterEach(sinon.restore);
 
   describe('Missing or invalid login fields', () => {
@@ -163,24 +160,4 @@ describe('POST /login/role', () => {
       expect(chaiHttpResponse.body).to.deep.equal({ message: 'Token must be a valid token' })
     })
   })
-
-  // describe('Valid token', () => {
-  //   it('returns status 200 and a token', async () => {
-  //     const authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJFbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsImlhdCI6MTY4MDY0MTkzMCwiZXhwIjoxNjgxMjQ2NzMwfQ.zEM8z1BCx2lk0MAVdTdbjK5sitSheMGcorv4FXAASws'
-
-  //     const user = {
-  //       id: 1,
-  //       email: 'admin@admin.com',
-  //       password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW'
-  //     }
-
-  //     sinon.stub(Model, 'findByPk').resolves(user as UsersModel);
-  //     const chaiHttpResponse = await chai
-  //       .request(app)
-  //       .get('/login/role')
-  //       .set('authorization', authorization)
-      
-  //     expect(chaiHttpResponse.status).to.be.equal(200)
-  //   })
-  // })
 })
