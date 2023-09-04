@@ -87,10 +87,10 @@ Credenciais de acesso presentes por padrão no banco de dados:
 React.js, Node.js com Typescript, Express.js, MySQL, Docker, JWT, Mocha, Chai, Sinon, Arquitetura MSC, API RESTful, Swagger
 
 
-<!-- ## Qualidade de Código
+## Qualidade de Código
 
 Análise SonarCloud
 
-![](sonarcloud.png) -->
+![](sonarcloud.png)
 
 
