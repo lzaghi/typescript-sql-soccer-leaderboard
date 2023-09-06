@@ -1,0 +1,728 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Soccer Leaderboard API",
+    "description": "API para funcionalidades do Trybe Futebol Clube",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3001",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "users",
+      "description": "Operações para acesso à aplicação"
+    },
+    {
+      "name": "teams",
+      "description": "Operações envolvendo times"
+    },
+    {
+      "name": "matches",
+      "description": "Operações envolvendo partidas"
+    },
+    {
+      "name": "leaderboards",
+      "description": "Operações envolvendo placares"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Validação de credenciais",
+        "description": "Endpoint para acesso ao sistema. \nNecessário passar um objeto com email válido e senha de no mínimo 6 caracteres, com os quais se checa a existência do registro.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "user@user.com"
+                },
+                "password": {
+                  "example": "secret_user"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJFbWFpbCI6InVzZXJAdXNlci5jb20iLCJpYXQiOjE2OTQwMjA1NzYsImV4cCI6MTY5NDYyNTM3Nn0.XkEB5T8uOAK18Z_-Z-_IaSvcrghlIPPjri41gZd7Zcc"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "All fields must be filled"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid email or password"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login/role": {
+      "get": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Consultar a credencial de um usuário",
+        "description": "Endpoint para checar permissões do usuário no sistema. \nNecessário passar por parâmetro um token válido obtido ao logar no sistema.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "type": "string",
+                  "example": "user"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token not fount or Invalid token"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams": {
+      "get": {
+        "tags": [
+          "teams"
+        ],
+        "summary": "Consultar todos os times",
+        "description": "Endpoint para listar todos os times cadastrados. \nNão é necessário um token para a consulta.",
+        "responses": {
+          "200": {
+            "description": "Exemplo do array de resposta",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "teamName": {
+                    "type": "string",
+                    "example": "Avaí/Kindermann"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/teams/{id}": {
+      "get": {
+        "tags": [
+          "teams"
+        ],
+        "summary": "Consultar um único time",
+        "description": "Endpoint para listar um único time. \nNão é necessário um token para a consulta, apenas o id do time desejado.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 2
+                },
+                "teamName": {
+                  "type": "string",
+                  "example": "Bahia"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "There is no team with such id!"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/matches": {
+      "post": {
+        "tags": [
+          "matches"
+        ],
+        "summary": "Cadastrar partida",
+        "description": "Endpoint para registrar uma nova partida. \nNecessário passar por parâmetro um token válido obtido ao logar no sistema, além dos ids dos times em questão e respectivos gols marcados.",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "homeTeamId": {
+                  "example": 2
+                },
+                "awayTeamId": {
+                  "example": 3
+                },
+                "homeTeamGoals": {
+                  "example": 1
+                },
+                "awayTeamGoals": {
+                  "example": 0
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 49
+                },
+                "homeTeamId": {
+                  "type": "number",
+                  "example": 2
+                },
+                "awayTeamId": {
+                  "type": "number",
+                  "example": 3
+                },
+                "homeTeamGoals": {
+                  "type": "number",
+                  "example": 1
+                },
+                "awayTeamGoals": {
+                  "type": "number",
+                  "example": 0
+                },
+                "inProgress": {
+                  "type": "boolean",
+                  "example": true
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "There is no team with such id!"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "It is not possible to create a match with two equal teams"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/matches/": {
+      "get": {
+        "tags": [
+          "matches"
+        ],
+        "summary": "Consultar todas as partidas",
+        "description": "Endpoint para listar todas as partidas. \nNão é necessário um token para a consulta.",
+        "responses": {
+          "200": {
+            "description": "Exemplo do array de resposta",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "homeTeamId": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "awayTeamId": {
+                    "type": "number",
+                    "example": 3
+                  },
+                  "homeTeamGoals": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "awayTeamGoals": {
+                    "type": "number",
+                    "example": 0
+                  },
+                  "inProgress": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "homeTeam": {
+                    "type": "object",
+                    "properties": {
+                      "teamName": {
+                        "type": "string",
+                        "example": "São Paulo"
+                      }
+                    }
+                  },
+                  "awayTeam": {
+                    "type": "object",
+                    "properties": {
+                      "teamName": {
+                        "type": "string",
+                        "example": "Grêmio"
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/matches/{id}": {
+      "patch": {
+        "tags": [
+          "matches"
+        ],
+        "summary": "Atualizar o placar de uma partida",
+        "description": "Endpoint para alterar o placar de uma partida. \nNecessário passar por parâmetro um token válido obtido ao logar no sistema, além do id da partida em questão e do novo placar.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "type": "object",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "homeTeamGoals": {
+                  "example": 5
+                },
+                "awayTeamGoals": {
+                  "example": 5
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Match updated"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token not fount or Invalid token"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/matches/{id}/finish": {
+      "patch": {
+        "tags": [
+          "matches"
+        ],
+        "summary": "Atualizar o status de uma partida",
+        "description": "Endpoint para alterar o status de uma partida para finalizado. \nNecessário passar por parâmetro um token válido obtido ao logar no sistema, além do id da partida em questão.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Finished"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Token not fount or Invalid token"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/leaderboard": {
+      "get": {
+        "tags": [
+          "leaderboards"
+        ],
+        "summary": "Consultar desempenhos gerais",
+        "description": "Endpoint para listar as informações de desempenho gerais. \nNão é necessário um token para a consulta.",
+        "responses": {
+          "200": {
+            "description": "Exemplo do array de resposta",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Palmeiras"
+                  },
+                  "totalPoints": {
+                    "type": "number",
+                    "example": 13
+                  },
+                  "totalGames": {
+                    "type": "number",
+                    "example": 5
+                  },
+                  "totalVictories": {
+                    "type": "number",
+                    "example": 4
+                  },
+                  "totalDraws": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "totalLosses": {
+                    "type": "number",
+                    "example": 0
+                  },
+                  "goalsFavor": {
+                    "type": "number",
+                    "example": 17
+                  },
+                  "goalsOwn": {
+                    "type": "number",
+                    "example": 5
+                  },
+                  "goalsBalance": {
+                    "type": "number",
+                    "example": 12
+                  },
+                  "efficiency": {
+                    "type": "string",
+                    "example": "86.67"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/leaderboard/home": {
+      "get": {
+        "tags": [
+          "leaderboards"
+        ],
+        "summary": "Consultar desempenhos da casa",
+        "description": "Endpoint para listar as informações de desempenho dos times da casa. \nNão é necessário um token para a consulta.",
+        "responses": {
+          "200": {
+            "description": "Exemplo do array de resposta",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Santos"
+                  },
+                  "totalPoints": {
+                    "type": "string",
+                    "example": "9"
+                  },
+                  "totalGames": {
+                    "type": "number",
+                    "example": 3
+                  },
+                  "totalVictories": {
+                    "type": "string",
+                    "example": "3"
+                  },
+                  "totalDraws": {
+                    "type": "string",
+                    "example": "0"
+                  },
+                  "totalLosses": {
+                    "type": "string",
+                    "example": "0"
+                  },
+                  "goalsFavor": {
+                    "type": "string",
+                    "example": "9"
+                  },
+                  "goalsOwn": {
+                    "type": "string",
+                    "example": "3"
+                  },
+                  "goalsBalance": {
+                    "type": "string",
+                    "example": "6"
+                  },
+                  "efficiency": {
+                    "type": "string",
+                    "example": "100.00"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/leaderboard/away": {
+      "get": {
+        "tags": [
+          "leaderboards"
+        ],
+        "summary": "Consultar desempenhos de visitantes",
+        "description": "Endpoint para listar as informações de desempenho dos times visitantes. \nNão é necessário um token para a consulta.",
+        "responses": {
+          "200": {
+            "description": "Exemplo do array de resposta",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Palmeiras"
+                  },
+                  "totalPoints": {
+                    "type": "string",
+                    "example": "6"
+                  },
+                  "totalGames": {
+                    "type": "number",
+                    "example": 2
+                  },
+                  "totalVictories": {
+                    "type": "string",
+                    "example": "2"
+                  },
+                  "totalDraws": {
+                    "type": "string",
+                    "example": "0"
+                  },
+                  "totalLosses": {
+                    "type": "string",
+                    "example": "0"
+                  },
+                  "goalsFavor": {
+                    "type": "string",
+                    "example": "7"
+                  },
+                  "goalsOwn": {
+                    "type": "string",
+                    "example": "0"
+                  },
+                  "goalsBalance": {
+                    "type": "string",
+                    "example": "7"
+                  },
+                  "efficiency": {
+                    "type": "string",
+                    "example": "100.00"
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

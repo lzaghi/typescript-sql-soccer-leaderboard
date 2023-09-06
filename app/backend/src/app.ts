@@ -1,4 +1,6 @@
 import * as express from 'express';
+import * as swaggerUi from 'swagger-ui-express';
+import * as swaggerDocument from './swagger/swagger.json';
 import loginRouter from './routers/login.router';
 import matchesRouter from './routers/matches.router';
 import teamsRouter from './routers/teams.router';
@@ -11,6 +13,7 @@ class App {
     this.app = express();
 
     this.config();
+    this.app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
     this.app.use('/teams', teamsRouter);
     this.app.use('/login', loginRouter);
     this.app.use('/matches', matchesRouter);
