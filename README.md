@@ -74,7 +74,13 @@ Credenciais de acesso presentes por padrão no banco de dados:
 
 ## Demonstração
 
-~ em breve! ~
+### Fluxo de usuário
+
+![](tfc-user.gif)
+
+### Fluxo de administrador
+
+![](tfc-admin.gif)
 
 ## Cobertura de testes
 
